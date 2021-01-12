@@ -6,22 +6,24 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:30:25 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:21:29 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/12 17:22:50 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		ft_free(void)
 {
 	int i;
 
 	i = 0;
-	while (i < g_data.amount)
+	while (i < g_data.amount / 2)
 	{
-		pthread_mutex_destroy(&g_philos[i].lock);
+		sem_post(g_lock);
 		i++;
 	}
+	sem_close(g_lock);
+	sem_unlink("g_lock");
 	return (1);
 }
 
@@ -43,14 +45,14 @@ int		start_threads(void)
 
 int		ft_check(int index)
 {
-	pthread_mutex_lock(&g_philos[index].lock);
+	sem_wait(g_lock);
 	if (ft_time_test(ft_time(), g_philos[index].last_meal) > g_data.time_to_die)
 	{
 		g_philos[index].died = 1;
-		pthread_mutex_unlock(&g_philos[index].lock);
+		sem_post(g_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&g_philos[index].lock);
+	sem_post(g_lock);
 	return (0);
 }
 
@@ -59,11 +61,13 @@ void	ft_destr(void)
 	int i;
 
 	i = 0;
-	while (i < g_data.amount)
+	while (i < g_data.amount / 2)
 	{
-		pthread_mutex_destroy(&g_philos[i].lock);
+		sem_post(g_lock);
 		i++;
 	}
+	sem_close(g_lock);
+	sem_unlink("g_lock");
 }
 
 int		ft_print_max_time(int check, int i)

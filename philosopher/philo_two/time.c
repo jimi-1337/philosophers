@@ -6,11 +6,11 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:15:33 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:21:17 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/12 16:18:57 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 struct timeval	ft_time(void)
 {
