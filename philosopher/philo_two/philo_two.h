@@ -6,7 +6,7 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 16:16:31 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:51:57 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:15:43 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,5 @@ sem_t				*g_lock;
 t_philo				*g_philos;
 t_data				g_data;
 int					g_times_eat_check;
+sem_t				*g_write;
 #endif

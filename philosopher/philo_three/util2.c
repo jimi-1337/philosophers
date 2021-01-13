@@ -6,37 +6,49 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:30:25 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/13 16:03:32 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/12 19:31:47 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 int		ft_free(void)
 {
 	int i;
 
 	i = 0;
-	while (i < g_data.amount)
+	while (i < g_data.amount / 2)
 	{
-		pthread_mutex_destroy(&g_philos[i].lock);
+		sem_post(g_lock);
 		i++;
 	}
-	free(g_philos);
+	sem_close(g_lock);
+	sem_unlink("g_lock");
 	return (1);
 }
 
 int		start_threads(void)
 {
-	int			i;
-	pthread_t	thread_id[g_data.amount];
+	int		i;
+	int		save;
+	int		status;
 
 	i = 0;
+	save = 0;
+	status = 0;
 	g_data.start = ft_time();
 	while (i < g_data.amount)
 	{
-		pthread_create(&thread_id[i], NULL, ft_lunch, &g_philos[i]);
-		pthread_detach(thread_id[i]);
+		if ((save = fork()) == 0)
+			ft_start(i);
+		else
+			g_ids[i] = save;
+		i++;
+	}
+	i = 0;
+	while (WEXITSTATUS(status) == 0 && i < g_data.amount)
+	{
+		waitpid(g_ids[i], &status, 0);
 		i++;
 	}
 	return (0);
@@ -44,14 +56,14 @@ int		start_threads(void)
 
 int		ft_check(int index)
 {
-	pthread_mutex_lock(&g_philos[index].lock);
+	sem_wait(g_lock);
 	if (ft_time_test(ft_time(), g_philos[index].last_meal) > g_data.time_to_die)
 	{
 		g_philos[index].died = 1;
-		pthread_mutex_unlock(&g_philos[index].lock);
+		sem_post(g_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&g_philos[index].lock);
+	sem_post(g_lock);
 	return (0);
 }
 
@@ -60,23 +72,23 @@ void	ft_destr(void)
 	int i;
 
 	i = 0;
-	while (i < g_data.amount)
+	while (i < g_data.amount / 2)
 	{
-		pthread_mutex_destroy(&g_philos[i].lock);
+		sem_post(g_lock);
 		i++;
 	}
-	free(g_philos);
+	sem_close(g_lock);
+	sem_unlink("g_lock");
 }
 
-int		ft_print_max_time(int check, int i)
+void	ft_print_max_time(int index)
 {
-	if (g_times_eat_check\
-	&& (g_philos[i].times_eat >= g_data.must_eat_count)\
-	&& (g_philos[i].check != -1))
+	if (g_times_eat_check &&
+	(g_philos[index].times_eat >= g_philos[index].max))
 	{
-		g_philos[i].check = -1;
-		check++;
-		ft_display_message("MAX_TIME\n", g_philos[i].index);
+		ft_display_message("max times\n", g_philos[index].index);
+		sem_post(g_lock);
+		sem_unlink("g_lock");
+		exit(0);
 	}
-	return (check);
 }

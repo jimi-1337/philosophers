@@ -6,11 +6,11 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:19:00 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/13 15:51:45 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 15:57:56 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 int		ft_strlen(char *str)
 {
@@ -72,14 +72,4 @@ void	ft_putnbr_fd(int n, int fd)
 		length--;
 	while (length >= 0)
 		write(fd, &str[length--], 1);
-}
-
-void	*ft_lunch(void *i)
-{
-	t_philo p;
-
-	p = *(t_philo*)i;
-	ft_display_message("<== started\n", p.index);
-	ft_start(p.index - 1);
-	return (NULL);
 }

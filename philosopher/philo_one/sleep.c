@@ -6,7 +6,7 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:02:03 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:21:12 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 15:54:42 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_sleep_int(int time_one, int x, int index)
 		g_data.time_to_die)
 		{
 			g_philos[index].died = 1;
-			ft_display_message("%d died\n", g_philos[index].index);
+			ft_display_message("died\n", g_philos[index].index);
 			return (1);
 		}
 	}
@@ -48,7 +48,7 @@ int		ft_sleep(int index)
 	if (ft_time_test(ft_time(), g_philos[index].last_meal) > g_data.time_to_die)
 	{
 		g_philos[index].died = 1;
-		ft_display_message("%d died\n", g_philos[index].index);
+		ft_display_message("died\n", g_philos[index].index);
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:19:00 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 16:18:57 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:14:13 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		ft_strlen(char *str)
 int		ft_exit(char *str)
 {
 	write(2, str, ft_strlen(str));
+	sem_close(g_write);
 	return (1);
 }
 
@@ -50,6 +51,8 @@ int		ft_atoi(char *str)
 	res = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 		res = (res * 10) + (str[i++] - '0');
+	if (str[i] != '\0')
+		return (-1);
 	return (res * is_neg);
 }
 

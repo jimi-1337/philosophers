@@ -6,13 +6,11 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 16:42:01 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:20:55 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:15:51 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-pthread_mutex_t		g_write;
 
 void	ft_display_message(char *str, int index)
 {
@@ -44,7 +42,7 @@ int		ft_check_philos(void)
 			g_data.time_to_die)
 			{
 				g_philos[i].died = 1;
-				ft_display_message("is died\n", g_philos[i].index);
+				ft_display_message("died\n", g_philos[i].index);
 				return (1);
 			}
 			check = ft_print_max_time(check, i);
@@ -89,7 +87,7 @@ void	ft_start(int c)
 		pthread_mutex_lock(&g_philos[index].lock);
 		pthread_mutex_lock(&g_philos[g_philos[index].right].lock);
 		if (g_philos[index].fork == 1 && \
-		g_philos[g_philos[index].right].fork == 1)
+		g_philos[g_philos[index].right].fork == 1 && g_philos[index].died != 1)
 		{
 			if (ft_work(index))
 				break ;

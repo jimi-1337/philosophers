@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/10 15:40:12 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/13 17:16:03 by amoujane         ###   ########.fr       */
+/*   Created: 2021/01/12 16:16:31 by amoujane          #+#    #+#             */
+/*   Updated: 2021/01/12 19:31:44 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <stdio.h>
 # include <pthread.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <signal.h>
 
 typedef struct		s_philo
 {
@@ -33,7 +35,6 @@ typedef struct		s_philo
 	int				max;
 	int				check;
 	struct timeval	last_meal;
-	pthread_mutex_t	lock;
 }					t_philo;
 
 typedef struct		s_data
@@ -47,6 +48,10 @@ typedef struct		s_data
 }					t_data;
 
 void				ft_destr();
+void				*ft_check_fork(void *a);
+void				ft_work(int index);
+void				ft_lunch_thread(int index);
+int					ft_check_one(void);
 int					ft_sleep(int index);
 int					ft_time_test(struct timeval ret, struct timeval philotime);
 struct timeval		ft_time();
@@ -60,11 +65,12 @@ void				ft_start(int c);
 int					init(int ac, char **av);
 int					ft_free(void);
 int					start_threads(void);
-int					ft_print_max_time(int check, int i);
+void				ft_print_max_time(int index);
+void				ft_kill_all(void);
 
-pthread_mutex_t		g_lock;
+sem_t				*g_lock;
 t_philo				*g_philos;
 t_data				g_data;
 int					g_times_eat_check;
-pthread_mutex_t		g_write;
+int					*g_ids;
 #endif

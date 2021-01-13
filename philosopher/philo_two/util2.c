@@ -6,7 +6,7 @@
 /*   By: amoujane <amoujane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:30:25 by amoujane          #+#    #+#             */
-/*   Updated: 2021/01/12 17:22:50 by amoujane         ###   ########.fr       */
+/*   Updated: 2021/01/13 17:13:49 by amoujane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ void	ft_destr(void)
 		sem_post(g_lock);
 		i++;
 	}
+	free(g_philos);
 	sem_close(g_lock);
+	sem_close(g_write);
 	sem_unlink("g_lock");
 }
 
